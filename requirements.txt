@@ -1,0 +1,19 @@
+pipwin
+# habis install pipwin run pipwin install pyaudio
+SpeechRecognition
+pyttsx3==2.71
+qrcode[pil]
+pywhatkit
+psutil
+requests
+pyautogui
+sketchpy
+datetime 
+webbrowser
+pygame
+pillow
+# langsung ketik "pip install -r requirements" buat install semua paket yang dibutuhkan di file main.py
+
+https://docs.google.com/spreadsheets/d/10vhigKu8KHQGfxLDky2WZzrAupEN7YDkLCZEW6tUG7A/edit?resourcekey#gid=1413259954
+
+983afcd78906be97b74610e31ac0dfaf
