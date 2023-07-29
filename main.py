@@ -242,7 +242,7 @@ class PersonalBot:
         jarvis.Speak("Which city's weather information would you like to know?")
         city = jarvis.Listen()
 
-        api_key = "983afcd78906be97b74610e31ac0dfaf"  # Ganti dengan API key Anda
+        api_key = "YOUR_API_KEY"  # Ganti dengan API key Anda
         base_url = "http://api.openweathermap.org/data/2.5/weather"
         forecast_url = "http://api.openweathermap.org/data/2.5/forecast"
 
