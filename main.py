@@ -9,6 +9,7 @@ import requests
 import wikipedia
 import pyjokes
 import platform
+import datetime
 from PIL import ImageGrab
 import datetime
 from qrgen import makeQRCode
@@ -52,6 +53,7 @@ class PersonalBot:
             query = input('Enter command: ')
             return query
         
+    
     def TakeScreenshot(self):
         screenshot = ImageGrab.grab()
         current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -429,6 +431,12 @@ if __name__ == '__main__':
         if 'sharingan' in result.lower():
             os.system("start assets/web/index.html")
             jarvis.PlayAudio("./assets/audio/Sharingan.mp3")
+            
+        if 'convert word to pdf' in result.lower():
+            os.system("py assets/py/doc2pdf.py")
+            
+        if 'covid victims' in result.lower():
+            os.system("py assets/py/data_covid.py")
             
         # Help command
         if 'help' in result.lower():
