@@ -75,11 +75,11 @@ judul_label = ttk.Label(root, text="Konversi Word ke PDF", font=("Helvetica", 16
 judul_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
 # Informasi pembuat dan copyright di bagian bawah
-footer_label = ttk.Label(root, text="Dibuat oleh [Zalzdarkent]", font=("Helvetica", 10))
+footer_label = ttk.Label(root, text="Dibuat oleh Zalzdarkent", font=("Helvetica", 10))
 footer_label.grid(row=2, column=0, columnspan=3, padx=10, pady=5)
 
 # Copyright
-copyright_label = ttk.Label(root, text="© 2023 [Zalzdarkent]. Hak Cipta Dilindungi.", font=("Helvetica", 8))
+copyright_label = ttk.Label(root, text="© 2023 Zalzdarkent. Hak Cipta Dilindungi.", font=("Helvetica", 8))
 copyright_label.grid(row=3, column=0, columnspan=3, padx=10, pady=5)
 
 root.mainloop()
