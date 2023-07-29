@@ -435,6 +435,9 @@ if __name__ == '__main__':
         if 'convert word to pdf' in result.lower():
             os.system("py assets/py/doc2pdf.py")
             
+        if 'convert pdf to word' in result.lower():
+            os.system("py assets/py/pdf2word.py")
+            
         if 'covid victims' in result.lower():
             os.system("py assets/py/data_covid.py")
             
