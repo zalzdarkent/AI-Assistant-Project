@@ -32,7 +32,7 @@ def perform_conversion():
         status_label.config(text="Mohon pilih file PDF (.pdf) yang valid.", foreground="red")
         return
 
-    output_directory = os.path.join("assets", "word")
+    output_directory = os.path.join("assets", "docx")
     os.makedirs(output_directory, exist_ok=True)
 
     # Dapatkan nama file tanpa ekstensi
