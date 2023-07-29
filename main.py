@@ -27,7 +27,7 @@ schedule = {}
 class PersonalBot:
     # ini befungsi untuk set langsung voice mode ketika program baru dijalankan
     def __init__(self):
-        self.command_mode = 'text' 
+        self.command_mode = 'text'  # saat awal dijalankan, sistemnya menerima inputan teks, kalo mau nerima inputan suara ganti aja jadi voice
         self.reminders = []
     
     
