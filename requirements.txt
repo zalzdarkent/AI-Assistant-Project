@@ -12,4 +12,5 @@ datetime
 webbrowser
 pygame
 pillow
+sketchpy
 # langsung ketik "pip install -r requirements" buat install semua paket yang dibutuhkan di file main.py

@@ -1,1 +1,1 @@
-jarvis.Speak(f"Date: {date}, Temperature: {temperature} degrees Celsius, Weather: {weather_description}")
+convert

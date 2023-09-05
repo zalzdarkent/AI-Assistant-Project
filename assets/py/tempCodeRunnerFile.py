@@ -1,85 +1,79 @@
-import tkinter as tk
-from tkinter import filedialog
-from docx2pdf import convert
-import os
-from tkinter import ttk
+import string
+from itertools import product
+from time import time
+from numpy import loadtxt
 
-def get_filename_without_extension(filepath):
-    return os.path.splitext(os.path.basename(filepath))[0]
 
-def is_valid_docx_file(filepath):
-    return os.path.isfile(filepath) and filepath.lower().endswith(".docx")
+def product_loop(password, generator):
+    for p in generator:
+        if ''.join(p) == password:
+            print('\nPassword:', ''.join(p))
+            return ''.join(p)
+    return False
 
-def convert_docx_to_pdf(input_file, output_file):
-    try:
-        convert(input_file, output_file)
-        print("Konversi berhasil. File PDF telah dibuat dan disimpan.")
-        status_label.config(text="Konversi berhasil. File PDF telah dibuat dan disimpan.", foreground="green")
-    except Exception as e:
-        status_label.config(text=f"Terjadi kesalahan saat melakukan konversi: {str(e)}", foreground="red")
 
-def browse_input_file():
-    file_path = filedialog.askopenfilename(filetypes=[("Word files", "*.docx")])
-    input_entry.delete(0, tk.END)
-    input_entry.insert(0, file_path)
+def bruteforce(password, max_nchar=8):
+    """Password brute-force algorithm.
+    Parameters
+    ----------
+    password : string
+        To-be-found password.
+    max_nchar : int
+        Maximum number of characters of password.
+    Return
+    ------
+    bruteforce_password : string
+        Brute-forced password
+    """
+    print('1) Comparing with most common passwords / first names')
+    common_pass = loadtxt('probable-v2-top12000.txt', dtype=str)
+    common_names = loadtxt('middle-names.txt', dtype=str)
+    cp = [c for c in common_pass if c == password]
+    cn = [c for c in common_names if c == password]
+    cnl = [c.lower() for c in common_names if c.lower() == password]
 
-def perform_conversion():
-    input_file = input_entry.get()
+    if len(cp) == 1:
+        print('\nPassword:', cp)
+        return cp
+    if len(cn) == 1:
+        print('\nPassword:', cn)
+        return cn
+    if len(cnl) == 1:
+        print('\nPassword:', cnl)
+        return cnl
 
-    if not is_valid_docx_file(input_file):
-        status_label.config(text="Mohon pilih file Word (.docx) yang valid.", foreground="red")
-        return
+    print('2) Digits cartesian product')
+    for l in range(1, 9):
+        generator = product(string.digits, repeat=int(l))
+        print("\t..%d digit" % l)
+        p = product_loop(password, generator)
+        if p is not False:
+            return p
 
-    output_directory = os.path.join("assets", "pdf")
-    os.makedirs(output_directory, exist_ok=True)
+    print('3) Digits + ASCII lowercase')
+    for l in range(1, max_nchar + 1):
+        print("\t..%d char" % l)
+        generator = product(string.digits + string.ascii_lowercase,
+                            repeat=int(l))
+        p = product_loop(password, generator)
+        if p is not False:
+            return p
 
-    # Dapatkan nama file tanpa ekstensi
-    filename_without_extension = get_filename_without_extension(input_file)
+    print('4) Digits + ASCII lower / upper + punctuation')
+    # If it fails, we start brute-forcing the 'hard' way
+    # Same as possible_char = string.printable[:-5]
+    all_char = string.digits + string.ascii_letters + string.punctuation
 
-    # Gabungkan nama file dengan ekstensi .pdf untuk output file
-    output_file = os.path.join(output_directory, f"{filename_without_extension}.pdf")
+    for l in range(1, max_nchar + 1):
+        print("\t..%d char" % l)
+        generator = product(all_char, repeat=int(l))
+        p = product_loop(password, generator)
+        if p is not False:
+            return p
 
-    convert_docx_to_pdf(input_file, output_file)
 
-# Membuat GUI
-root = tk.Tk()
-root.title("Konversi Word ke PDF")
-
-# Menggunakan tema "clam" dari ttk
-style = ttk.Style()
-style.theme_use("clam")
-
-frame = ttk.Frame(root, padding="20")
-frame.grid(row=1, column=1, sticky=(tk.W, tk.E, tk.N, tk.S))
-
-input_label = ttk.Label(frame, text="File Word (.docx):")
-input_label.grid(row=0, column=0, padx=5, pady=5)
-
-input_entry = ttk.Entry(frame, width=50)
-input_entry.grid(row=0, column=1, padx=5, pady=5)
-
-browse_input_button = ttk.Button(frame, text="Pilih File", command=browse_input_file)
-browse_input_button.grid(row=0, column=2, padx=5, pady=5)
-
-convert_button = ttk.Button(frame, text="Konversi", command=perform_conversion)
-convert_button.grid(row=1, column=1, padx=5, pady=10)
-
-# Konfigurasi kolom untuk tombol konversi berada di tengah
-frame.columnconfigure(1, weight=1)
-
-status_label = ttk.Label(frame, text="", foreground="green")
-status_label.grid(row=2, column=0, columnspan=3, padx=5, pady=5)
-
-# Judul di bagian atas
-judul_label = ttk.Label(root, text="Konversi Word ke PDF", font=("Helvetica", 16, "bold"))
-judul_label.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
-
-# Informasi pembuat dan copyright di bagian bawah
-footer_label = ttk.Label(root, text="Dibuat oleh [Zalzdarkent]", font=("Helvetica", 10))
-footer_label.grid(row=2, column=0, columnspan=3, padx=10, pady=5)
-
-# Copyright
-copyright_label = ttk.Label(root, text="© 2023 [Zalzdarkent]. Hak Cipta Dilindungi.", font=("Helvetica", 8))
-copyright_label.grid(row=3, column=0, columnspan=3, padx=10, pady=5)
-
-root.mainloop()
+# EXAMPLE
+start = time()
+bruteforce('sunshine') # Try with '123456' or '751345' or 'test2018'
+end = time()
+print('Total time: %.2f seconds' % (end - start))

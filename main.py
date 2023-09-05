@@ -16,10 +16,10 @@ from qrgen import makeQRCode
 from tabulate import tabulate
 from sketchpy import library as lib
 
-# ini buat qr code, jadwal, sama main musik 
+# ini buat qr code, jadwal, sama main musik
 ig_username = 'zalz_ummar18'
 favourite_song_link = ''
-qr_code_link = 'https://instagram.com/zalz_ummar18'
+qr_code_link = 'https://instagram.com/zalz_ummar19'
 playlist_link = ''
 schedule = {}
 
@@ -27,11 +27,18 @@ schedule = {}
 class PersonalBot:
     # ini befungsi untuk set langsung voice mode ketika program baru dijalankan
     def __init__(self):
-        self.command_mode = 'text'  # saat awal dijalankan, sistemnya menerima inputan teks, kalo mau nerima inputan suara ganti aja jadi voice
+        # saat awal dijalankan, sistemnya menerima inputan teks, kalo mau nerima inputan suara ganti aja jadi voice
+        self.command_mode = 'text'
         self.reminders = []
-    
-    
+
     def Listen(self):
+        """
+        The function listens for voice commands if the command mode is set to 'voice', otherwise it
+        prompts the user to enter a command through text.
+        :return: the user's command/query. If the command mode is set to 'voice', it uses speech
+        recognition to listen to the user's voice and convert it into text. If the command mode is set
+        to 'text', it prompts the user to enter a command/query manually.
+        """
         if self.command_mode == 'voice':
             r = sr.Recognizer()
             with sr.Microphone() as source:
@@ -52,9 +59,12 @@ class PersonalBot:
         elif self.command_mode == 'text':
             query = input('Enter command: ')
             return query
-        
-    
+
     def TakeScreenshot(self):
+        """
+        The function `TakeScreenshot` captures the current screen and saves it as a PNG image file with
+        a timestamp in the filename.
+        """
         screenshot = ImageGrab.grab()
         current_time = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         file_name = f"./assets/img/screenshot/screenshot_{current_time}.png"
@@ -62,8 +72,8 @@ class PersonalBot:
         print(f"Screenshot saved as {file_name}")
         self.Speak(f"Screenshot saved")
 
-
     # ini untuk pindah mode ke teks mode, buat pindah ke voice mode lagi masih dikembangkan
+
     def SwitchCommandMode(self):
         self.Speak("Do you want to switch to text mode? Say 'yes' or 'no'.")
         response = self.Listen()
@@ -73,11 +83,11 @@ class PersonalBot:
             self.Speak('Switched to text mode. Please enter commands.')
         else:
             self.Speak('Switching to voice mode. Please give voice commands.')
-          
-    # fitur untuk mengetahui spek laptop   
+
+    # fitur untuk mengetahui spek laptop
     def GetSystemSpecs(self):
         system_info = f"System Specifications:\n"
-        system_info += f"Operating System: {platform.system()} {platform.release()}\n"
+        system_info += f"Operating System: Windows {platform.release()}\n"
         system_info += f"Processor: {platform.processor()}\n"
         system_info += f"Architecture: {platform.machine()}\n"
         system_info += f"RAM: {self.GetRAMInfo()}\n"
@@ -109,13 +119,17 @@ class PersonalBot:
 
     # ini juga mata wibu
     def rinne_sharingan(self):
+        """
+        The function `rinne_sharingan` runs a Python script called `rinnegan.py` using the `os.system`
+        function.
+        """
         os.system("python assets/py/rinnegan.py")
-        
+
     def ClearScreen(self):
         os_name = platform.system().lower()
         if 'windows' in os_name:
             os.system("cls")
-            
+
     # Fitur untuk mencari informasi di Wikipedia
     def SearchWikipedia(self, query):
         try:
@@ -124,14 +138,16 @@ class PersonalBot:
             self.Speak(result)
         except wikipedia.exceptions.DisambiguationError as e:
             print("There are multiple options available. Please specify the exact topic.")
-            self.Speak("There are multiple options available. Please specify the exact topic.")
+            self.Speak(
+                "There are multiple options available. Please specify the exact topic.")
         except wikipedia.exceptions.PageError as e:
             print("The requested page does not exist on Wikipedia.")
             self.Speak("The requested page does not exist on Wikipedia.")
         except Exception as e:
             print("An error occurred while fetching information from Wikipedia.")
-            self.Speak("An error occurred while fetching information from Wikipedia.")
-    
+            self.Speak(
+                "An error occurred while fetching information from Wikipedia.")
+
     # fitur untuk menampilkan mata wibu
     def sharingan(self):
         os.system("python assets/py/sharingan.py")
@@ -153,19 +169,23 @@ class PersonalBot:
             "12. Drawing an amazing eyes",
             "13. Switch to text mode, and vice versa",
             "14. See the specifications of your device",
-            "15. Take the screenshot"
+            "15. Take the screenshot",
+            "16. Detect the jutsu",
+            "17. Converting from docx to pdf file and vice versa",
+            "18. Download the data of Corona's victims"
         ]
-        
+
         capabilities_text = "This is the features that can you ask to me:\n"
         capabilities_text += "\n".join(capabilities)
-        
+
         print(capabilities_text)
         jarvis.Speak(capabilities_text)
         print("For features number 5, 3, and 10, I suggest you instruct me to switch to text mode.")
-        jarvis.Speak("For features number 5, 3, and 10, I suggest you instruct me to switch to text mode.")
+        jarvis.Speak(
+            "For features number 5, 3, and 10, I suggest you instruct me to switch to text mode.")
         print("To enable the text mode, just say 'text mode'")
         jarvis.Speak("To enable the text mode, just say 'text mode'")
-        
+
     # kalo ga tau cara pakai nya ada di dalam fungsi ini
     def Help(self):
         help_text = """
@@ -208,7 +228,8 @@ class PersonalBot:
         - Say, "Voice Mode": (Not implemented yet) Switches back to voice mode for voice commands. (this feature is still on development)
         """
         print(help_text)
-        jarvis.Speak("Here are the available commands. Please say the command you want to use.")
+        jarvis.Speak(
+            "Here are the available commands. Please say the command you want to use.")
         jarvis.Speak(help_text)
 
     # fitur informasi kondisi cpu saat ini
@@ -217,7 +238,7 @@ class PersonalBot:
         cpu_info = f"Current CPU usage: {cpu_percent}%"
         print(cpu_info)
         return cpu_info
-    
+
     # Fitur untuk memberikan joke
     def TellJoke(self):
         joke = pyjokes.get_joke()
@@ -239,10 +260,15 @@ class PersonalBot:
 
     # fitur informasi cuaca berdasarkan kota yang disebut
     def GetWeatherInfo(self):
-        jarvis.Speak("Which city's weather information would you like to know?")
+        """
+        The function `GetWeatherInfo` retrieves and displays the current weather information and a
+        one-week forecast for a specified city using the OpenWeatherMap API.
+        """
+        jarvis.Speak(
+            "Which city's weather information would you like to know?")
         city = jarvis.Listen()
 
-        api_key = "YOUR_API_KEY"  # Ganti dengan API key Anda
+        api_key = "983afcd78906be97b74610e31ac0dfaf"  # Ganti dengan API key Anda
         base_url = "http://api.openweathermap.org/data/2.5/weather"
         forecast_url = "http://api.openweathermap.org/data/2.5/forecast"
 
@@ -279,7 +305,8 @@ class PersonalBot:
                 date = forecast["dt_txt"]
                 temperature = forecast["main"]["temp"]
                 weather_description = forecast["weather"][0]["description"]
-                table_data.append([date, f"{temperature}°C", weather_description])
+                table_data.append(
+                    [date, f"{temperature}°C", weather_description])
 
             # Menampilkan tabel informasi cuaca
             headers = ["Date", "Temperature", "Weather"]
@@ -314,15 +341,15 @@ class PersonalBot:
             activity = schedule[current_day]["activity"]
             scheduled_time = schedule[current_day]["time"]
 
-            jarvis.Speak(f"Today is {current_day.capitalize()}.")
-            jarvis.Speak(f"The time is {current_time}.")
-            jarvis.Speak(f"You have a scheduled activity at {scheduled_time}.")
-            jarvis.Speak(f"The activity is {activity}.")
-
             print(f"Today is {current_day.capitalize()}.")
             print(f"The current time is {current_time}.")
             print(f"You have a scheduled activity at {scheduled_time}.")
             print(f"The activity is {activity}.")
+
+            jarvis.Speak(f"Today is {current_day.capitalize()}.")
+            jarvis.Speak(f"The time is {current_time}.")
+            jarvis.Speak(f"You have a scheduled activity at {scheduled_time}.")
+            jarvis.Speak(f"The activity is {activity}.")
         else:
             jarvis.Speak(f"Today is {current_day.capitalize()}.")
             jarvis.Speak(f"The current time is {current_time}.")
@@ -332,10 +359,13 @@ class PersonalBot:
             print("You don't have any scheduled activity for today.")
 
 
+# The above code is creating an instance of a class called "PersonalBot" named "jarvis". It then
+# prints a message and calls a method called "Speak" on the "jarvis" object to speak a message.
 if __name__ == '__main__':
     jarvis = PersonalBot()
     print("Good day sir, I\'m Jarvis. say 'Specifications' to see what can i do for you")
-    jarvis.Speak('Good day sir, I\'m Jarvis. say "Specifications" to see what can i do for you')
+    jarvis.Speak(
+        'Good day sir, I\'m Jarvis. say "Specifications" to see what can i do for you')
 
     while True:
         if jarvis.command_mode == 'voice':
@@ -344,21 +374,21 @@ if __name__ == '__main__':
             result = input('Enter command: ')
         # result = jarvis.Listen()
         print("Your order is", result)
-        # jarvis.ClearScreen() 
+        # jarvis.ClearScreen()
 
         # Basic Commands
         if 'jarvis' in result.lower():
             jarvis.Speak('Yes, sir?')
-            jarvis.ClearScreen() 
-            
+            jarvis.ClearScreen()
+
         if 'take a screenshot' in result.lower() or 'screenshot' in result.lower() or 'ss' in result.lower():
             jarvis.TakeScreenshot()
- 
+
         # perintah menampilkan mata wibu
         if 'rinnegan' in result.lower():
-            jarvis.Speak('Drawing Rinne Sharingan')
+            # jarvis.Speak('Drawing Rinne Sharingan')
             jarvis.rinne_sharingan()
-            
+
         # liat spesifikasi laptop kamu
         if 'get system' in result.lower():
             system_specs = jarvis.GetSystemSpecs()
@@ -370,24 +400,25 @@ if __name__ == '__main__':
 
         # perintah pengenalan diri
         if 'who are you' in result.lower():
-            print("I am Jarvis, version 1.0. I am an AI assistant developed by Zalzdarkent on July 31, 2023")
+            print(
+                "I am Jarvis, version 1.0. I am an AI assistant developed by Zalzdarkent on July 31, 2023")
             jarvis.Speak(
                 'I am Jarvis, version 1.0. I am an AI assistant developed by Zalzdarkent on July 31, 2023')
 
         # buat buka browser, kalo kalian pakai duck duck go atau yang lain bisa diganti
         if 'open chrome' in result.lower():
-            jarvis.Speak('Opening a new browser for you')
+            jarvis.Speak('Opening a new browser')
             os.system("start chrome")
-            
+
         # fitur baru
 
         # perintah informasi cuaca
         if 'weather' in result.lower():
             jarvis.GetWeatherInfo()
-        
+
         if 'clear' in result.lower() or 'cls' in result.lower():
-            jarvis.ClearScreen() 
-            
+            jarvis.ClearScreen()
+
         # ini buat ganti ke perintah teks
         if 'text mode' in result.lower():
             jarvis.SwitchCommandMode()
@@ -400,19 +431,19 @@ if __name__ == '__main__':
         # buat buka notepad
         if 'open notepad' in result.lower():
             os.system("start notepad")
-            
+
         # buat liat daftar fitur
         if 'specifications' in result.lower():
             jarvis.GetCapabilities()
 
         # if jarvis.command_mode == 'text':
         #     jarvis.SwitchVoiceMode()
-        
+
         if 'search on wikipedia' in result.lower() or 'wikipedia' in result.lower():
             jarvis.Speak('What do you want to search for on Wikipedia?')
             search_query = jarvis.Listen()
             jarvis.SearchWikipedia(search_query)
-            
+
         if 'tell a joke' in result.lower():
             jarvis.TellJoke()
 
@@ -420,27 +451,30 @@ if __name__ == '__main__':
         if 'open visual studio code' in result.lower():
             jarvis.Speak("Opening Visual Studio Code")
             os.system("start code")
-            
+
         # nah ini kalo kalian punya website sendiri bisa diganti aja file location nya
         if 'open my website' in result.lower():
             jarvis.Speak('Opening your website')
             website_path = 'file:///C:/xampp/htdocs/aruna/index.html'
-            webbrowser.open(website_path, new=1)     
-                                                                                                                                               
+            webbrowser.open(website_path, new=1)
+
         # ini juga mata wibu
         if 'sharingan' in result.lower():
             os.system("start assets/web/index.html")
             jarvis.PlayAudio("./assets/audio/Sharingan.mp3")
-            
+
         if 'convert word to pdf' in result.lower():
             os.system("py assets/py/doc2pdf.py")
-            
+
         if 'convert pdf to word' in result.lower():
             os.system("py assets/py/pdf2word.py")
-            
+
         if 'covid victims' in result.lower():
             os.system("py assets/py/data_covid.py")
-            
+
+        if 'jutsu' in result.lower() or 'ninjutsu' in result.lower() or 'hand sign' in result.lower():
+            os.system("py NINJUTSU/Ninjutsu_demo.py")
+
         # Help command
         if 'help' in result.lower():
             jarvis.Help()
@@ -516,7 +550,6 @@ if __name__ == '__main__':
             jarvis.Speak('Opening Microsoft Excel')
             os.system("start excel")
 
-
         # menutup chrome
         if 'close chrome' in result.lower():
             if 'chrome.exe' in (p.name() for p in psutil.process_iter()):
@@ -524,16 +557,15 @@ if __name__ == '__main__':
                 os.system("taskkill /im chrome.exe /f")
             else:
                 jarvis.Speak('Chrome is not currently open')
-             
-             
-        # menutup notepad   
+
+        # menutup notepad
         if 'close notepad' in result.lower():
             if 'notepad.exe' in (p.name() for p in psutil.process_iter()):
                 jarvis.Speak('Closing the notepad')
                 os.system("taskkill /im notepad.exe /f")
             else:
                 jarvis.Speak('notepad is not currently open')
-        
+
         # menutup ms word
         if 'close word' in result.lower():
             if 'winword.exe' in (p.name() for p in psutil.process_iter()):
@@ -542,7 +574,6 @@ if __name__ == '__main__':
             else:
                 jarvis.Speak('microsoft word is not currently open')
 
-        
         # menutup ppt
         if 'close powerpoint' in result.lower():
             if 'powerpnt.exe' in (p.name() for p in psutil.process_iter()):
@@ -550,8 +581,7 @@ if __name__ == '__main__':
                 os.system("taskkill /im powerpnt.exe /f")
             else:
                 jarvis.Speak('microsoft power point is not currently open')
-                
-        
+
         # menutup excel
         if 'close excel' in result.lower():
             if 'excel.exe' in (p.name() for p in psutil.process_iter()):
@@ -559,7 +589,6 @@ if __name__ == '__main__':
                 os.system("taskkill /im excel.exe /f")
             else:
                 jarvis.Speak('microsoft excel is not currently open')
-        
 
         # menutup vs code
         if 'close visual studio code' in result.lower():
@@ -568,8 +597,7 @@ if __name__ == '__main__':
                 os.system("taskkill /im code.exe /f")
             else:
                 jarvis.Speak('visual studio code is not currently open')
-            
-        
+
         # menu tutup ms edge
         if 'close edge' in result.lower():
             if 'msedge.exe' in (p.name() for p in psutil.process_iter()):
@@ -578,8 +606,6 @@ if __name__ == '__main__':
             else:
                 jarvis.Speak('microsoft edge is not currently open')
 
-        
-        
         # menutup semua aplikasi
         if 'close all' in result.lower():
             closed_apps = []
